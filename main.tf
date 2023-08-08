@@ -47,6 +47,40 @@ module "public-rt-table" {
   aws_igw_id                 = module.igw.output_igw_id
 }
 
+module "private-rt-table" {
+  source         = "./modules/private-rt-table"
+  aws_vpc_id     = module.vpc.output_vpc_id
+  aws_subnet_ids = module.subnet.output_subnet_ids
+}
+
+module "private-ec2" {
+  source          = "./modules/private-ec2"
+  aws_key_name    = module.key-pair.output_key_name
+  aws_private_pem = module.key-pair.output_private_pem
+  aws_subnet_ids  = module.subnet.output_subnet_ids
+  aws_sg_id       = module.sg.output_default_sg_id
+}
+
+module "nat-gw" {
+  source         = "./modules/nat-gw"
+  aws_subnet_ids = module.subnet.output_subnet_ids
+}
+
+module "private-nat-rt-table" {
+  source             = "./modules/private-nat-rt-table"
+  aws_vpc_id         = module.vpc.output_vpc_id
+  aws_subnet_ids     = module.subnet.output_subnet_ids
+  aws_nat_gateway_id = module.nat-gw.output_nat_gw_id
+}
+
+module "private-nat-ec2" {
+  source          = "./modules/private-nat-ec2"
+  aws_key_name    = module.key-pair.output_key_name
+  aws_private_pem = module.key-pair.output_private_pem
+  aws_subnet_ids  = module.subnet.output_subnet_ids
+  aws_sg_id       = module.sg.output_default_sg_id
+}
+
 module "public-ec2" {
   source          = "./modules/public-ec2"
   aws_key_name    = module.key-pair.output_key_name
@@ -54,15 +88,3 @@ module "public-ec2" {
   aws_subnet_ids  = module.subnet.output_subnet_ids
   aws_sg_id       = module.sg.output_default_sg_id
 }
-
-# #IGW, NAT 연결 X
-# module "private-rt-table" {
-#   source         = "./modules/private-rt-table"
-#   aws_subnet_ids = module.subnet.aws_subnet_ids
-# }
-
-# #NAT 연결
-# module "private-db-rt-table" {
-#   source         = "./modules/private-db-rt-table"
-#   aws_subnet_ids = module.subnet.aws_subnet_ids
-# }

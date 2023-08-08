@@ -6,10 +6,6 @@ variable "aws_subnet_ids" {
   type = list(any)
 }
 
-variable "aws_igw_id" {
-  type = string
-}
-
-variable "aws_default_route_table_id" {
+variable "aws_nat_gateway_id" {
   type = string
 }

@@ -1,7 +1,7 @@
 resource "aws_vpc" "tw_vpc" {
-  cidr_block           = var.vpc_cidr_block
-  
+  cidr_block = var.vpc_cidr_block
+
   tags = {
-    Name        = var.vpc_name
+    Name = var.vpc_name
   }
 }

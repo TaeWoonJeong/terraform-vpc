@@ -2,7 +2,7 @@ data "aws_ami" "ubuntu" {
   most_recent = true
 
   filter {
-    name = "name"
+    name   = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
   }
 
@@ -29,7 +29,7 @@ resource "aws_instance" "tw_instance" {
 
 resource "aws_eip" "tw_eip" {
   instance = aws_instance.tw_instance.id
-  domain = "vpc"
+  domain   = "vpc"
 }
 
 resource "aws_eip_association" "tw_eip_association" {
